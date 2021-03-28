@@ -26,14 +26,25 @@ string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
+add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+
 #hunter_add_package(GTest)
 #find_package(GTest CONFIG REQUIRED)
 
-hunter_add_package(Boost COMPONENTS filesystem log system thread date_time )
-find_package(Boost 1.72.0 CONFIG REQUIRED filesystem log log_setup system thread date_time)
+hunter_add_package(Boost COMPONENTS  system filesystem log)
+find_package(Boost 1.72.0 CONFIG REQUIRED thread log log_setup  date_time filesystem system)
+
+#SET(Boost_USE_STATIC_LIBS ON)  
+#SET(Boost_USE_MULTITHREADED ON)  
+#FIND_PACKAGE(Boost 1.72.0 COMPONENTS **system thread filesystem date_time log log_setup** REQUIRED)  
+
+
+
+
+
 
 hunter_add_package(nlohmann_json)
-find_package(nlohmann_json 3.1.4 CONFIG REQUIRED)
+find_package(nlohmann_json 3.8.0 CONFIG REQUIRED)
 
 #add_library(${PROJECT_NAME} STATIC
   # enum your files and delete this comment
@@ -51,7 +62,7 @@ target_include_directories(CPP
 #target_link_libraries(demo ${PROJECT_NAME})
 
 target_link_libraries(CPP Boost::log)
-
+target_link_libraries(CPP Boost::thread)
 #if(BUILD_TESTS)
   #add_executable(tests
     # TODO: enum your files and delete this comment
